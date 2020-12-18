@@ -476,6 +476,7 @@ parts:
       - --disable-dav1d
       - --enable-aom
       - --disable-altivec
+      - --disable-chromaprint
     override-build: |
       git apply -v $SNAPCRAFT_PROJECT_DIR/patches/mmal.patch
       snapcraftctl build
