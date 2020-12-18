@@ -519,6 +519,7 @@ parts:
       - libnotify-dev
       - libmodplug-dev
       - libplacebo-dev
+      - libprotobuf-dev
       - libpulse-dev
       - libqt5svg5-dev
       - libqt5x11extras5-dev
