@@ -13,7 +13,7 @@ description: |
   connected to the correct HDMI output (this VLC can only play fullscreen on one of them).
 
 grade: stable
-confinement: strict
+confinement: devmode
 compression: lzo
 
 architectures:
