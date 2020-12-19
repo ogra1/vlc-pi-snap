@@ -1,3 +1,5 @@
+[![vlc-pi](https://snapcraft.io/vlc-pi/badge.svg)](https://snapcraft.io/vlc-pi)
+
 ## VLC snap built with accelerated playback support (MMAL) for Raspberry Pi
 
 This snap of VLC is specifically created for the Raspberry Pi, it includes the MMAL (Multi-Media
