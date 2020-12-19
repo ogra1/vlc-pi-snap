@@ -17,6 +17,8 @@ Please make also sure to have the **hardware-observe interface** connected via
 This snap is still experimental and requires to be installed with the **--devmode** flag
 until https://github.com/snapcore/snapd/pull/9804 has been fixed in snapd.
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/vlc-pi)
+
 ## Building
 
 This snap needs to be built on an armhf system, preferably inside an lxd container using the
