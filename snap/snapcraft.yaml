@@ -27,13 +27,12 @@ architectures:
 apps:
   vlc-pi:
     desktop: usr/share/applications/vlc.desktop
-    command: bin/desktop-launch $SNAP/snap/command-chain/alsa-launch $SNAP/usr/bin/vlc
+    command: bin/locales-launch $SNAP/bin/desktop-launch $SNAP/usr/bin/vlc
     environment:
       LD_LIBRARY_PATH: "$SNAP/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$SNAP/usr/lib/vlc:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/oss4-libsalsa:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/samba:$SNAP/usr/lib"
       KDE_FORK_SLAVES: "1"
       KF5_LIBEXEC_DIR: "$SNAP/usr/lib/$ARCH/libexec/kf5"
       QML2_IMPORT_PATH: "$QML2_IMPORT_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/qt5/qml/"
-      ALWAYS_USE_PULSEAUDIO: 1
     plugs:
       - audio-record
       - audio-playback
@@ -59,6 +58,8 @@ apps:
 layout:
   /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
     bind: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib
+  /usr/share/alsa/alsa.conf:
+    bind-file: $SNAP/usr/share/alsa/alsa.conf
 
 parts:
   pi-libs:
@@ -103,25 +104,11 @@ parts:
       snapcraftctl prime
       # force armhf
       sed -i 's/export SNAP_LAUNCHER/export ARCH="arm-linux-gnueabihf"\nexport SNAP_LAUNCHER/' bin/desktop-launch
-  alsa-mixin:
-    plugin: dump
-    after: [ desktop-qt5 ]
-    source: https://github.com/diddlesnaps/snapcraft-alsa.git
-    source-subdir: snapcraft-assets
-    build-packages:
-      - libasound2-dev
-    stage-packages:
-      - libasound2
-      - libasound2-plugins
-    override-prime: |
-      snapcraftctl prime
-      # force armhf
-      sed -i 's/export ALSA_CONFIG_PATH/export ALSA_ARCH_TRIPLET="arm-linux-gnueabihf"\n  export ALSA_CONFIG_PATH/' snap/command-chain/alsa-launch
   ffmpeg:
     source: https://github.com/RPi-Distro/ffmpeg.git
     source-depth: 1
     plugin: autotools
-    after: [ pi-libs, desktop-qt5, alsa-mixin ]
+    after: [ pi-libs, desktop-qt5 ]
     build-environment:
       - LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAPCRAFT_STAGE/usr/lib"
     autotools-configure-parameters:
@@ -207,6 +194,7 @@ parts:
       - frei0r-plugins-dev
       - ladspa-sdk
       - libaom-dev
+      - libasound2-dev
       - libass-dev
       - libbluray-dev
       - libbs2b-dev
@@ -282,6 +270,8 @@ parts:
       - libusb-1.0-0
       - libaom0
       - libarchive13
+      - libasound2
+      - libasound2-plugins
       - libass9
       - libavc1394-0
       - libbluray2
@@ -317,6 +307,7 @@ parts:
       - libopenmpt0
       - libopus0
       - libpgm-5.2-0
+      - libpulse0
       - libraw1394-11
       - librubberband2
       - libsdl2-2.0-0
@@ -646,6 +637,13 @@ parts:
       - -usr/lib/arm-linux-gnueabihf/libasound.so.2
       - -usr/lib/arm-linux-gnueabihf/libjack.so.0
       - -usr/lib/arm-linux-gnueabihf/libjackserver.so.0
+  locales-launch:
+    plugin: nil
+    stage-snaps:
+    - locales-launch
+    stage-packages:
+    - libc-bin
+    - locales
   cleanup:
     plugin: nil
     after: [ vlc ]
@@ -656,10 +654,13 @@ parts:
       # delete any remaining headers
       find . -name '*.h' -delete
       # link mesa libs to correct search names
-      cd usr/lib/arm-linux-gnueabihf/
+      cd ${SNAPCRAFT_PRIME}/usr/lib/arm-linux-gnueabihf/
       ln -sf libEGL.so.1 libEGL.so || true
       ln -sf libGLESv2.so.2 libGLESv2.so || true
+      # clean up doc dirs
       find ${SNAPCRAFT_PRIME}/usr/share/doc/ -type f -not -name 'copyright' -delete || true
       rm ${SNAPCRAFT_PRIME}/usr/share/doc/*/*.gz 2>/dev/null || true
       rm ${SNAPCRAFT_PRIME}/usr/share/doc/*/README* 2>/dev/null || true
       find ${SNAPCRAFT_PRIME}/usr/share -type d -empty -delete || true
+      # remove pre-generated locales, we generate them on first start
+      rm -rf ${SNAPCRAFT_PRIME}/usr/lib/locale/* 2>/dev/null || true
