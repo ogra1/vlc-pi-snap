@@ -35,13 +35,11 @@ apps:
       QML2_IMPORT_PATH: "$QML2_IMPORT_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/qt5/qml/"
       ALWAYS_USE_PULSEAUDIO: 1
     plugs:
-      - alsa
       - audio-record
       - audio-playback
       - avahi-control
       - camera
       - desktop
-      - desktop-legacy
       - dvb
       - hardware-observe
       - home
@@ -51,7 +49,6 @@ apps:
       - network-bind
       - opengl
       - optical-drive
-      - pulseaudio
       - removable-media
       - screen-inhibit-control
       - unity7
