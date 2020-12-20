@@ -8,9 +8,13 @@ description: |
   an MMAL patched version of FFmpeg as found at https://github.com/RPi-Distro/ffmpeg and
   the accelerated videocore binaries from https://github.com/raspberrypi/firmware.
 
-  Please make sure your use is in the "video" group to gain access to the /dev/vchiq device.
+  Please make sure your user is in the "video" group to gain access to the /dev/vchiq device.
   If you have problems with fullscreen playback on a Pi4 or Pi400, make sure your screen is
   connected to the correct HDMI output (this VLC can only play fullscreen on one of them).
+
+  Please make also sure to have the "hardware-observe" interface connected via
+  
+      sudo snap connect vlc-pi:hardware-observe
 
 grade: stable
 confinement: devmode
@@ -654,9 +658,11 @@ parts:
       find . -name '*.a' -delete
       # delete any remaining headers
       find . -name '*.h' -delete
-      # clear plugin cache
-      #find . -name plugins.dat -delete
       # link mesa libs to correct search names
       cd usr/lib/arm-linux-gnueabihf/
       ln -sf libEGL.so.1 libEGL.so || true
       ln -sf libGLESv2.so.2 libGLESv2.so || true
+      find ${SNAPCRAFT_PRIME}/usr/share/doc/ -type f -not -name 'copyright' -delete || true
+      rm ${SNAPCRAFT_PRIME}/usr/share/doc/*/*.gz 2>/dev/null || true
+      rm ${SNAPCRAFT_PRIME}/usr/share/doc/*/README* 2>/dev/null || true
+      find ${SNAPCRAFT_PRIME}/usr/share -type d -empty -delete || true
