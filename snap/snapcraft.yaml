@@ -115,7 +115,7 @@ parts:
       - --prefix=/usr
       - --toolchain=hardened
       - --enable-gpl
-      - --disable-stripping
+      - --enable-stripping
       - --enable-avresample
       - --disable-filter=resample
       - --enable-avisynth
