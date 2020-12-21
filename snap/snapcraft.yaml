@@ -664,3 +664,6 @@ parts:
       find ${SNAPCRAFT_PRIME}/usr/share -type d -empty -delete || true
       # remove pre-generated locales, we generate them on first start
       rm -rf ${SNAPCRAFT_PRIME}/usr/lib/locale/* 2>/dev/null || true
+      # drop useless dri drivers
+      find ${SNAPCRAFT_PRIME}/usr/lib/arm-linux-gnueabihf/dri/ -type f -not -name 'vc4_dri.so' \
+          -not -name 'v3d_dri.so' -not -name 'swrast_dri.so' -delete || true
