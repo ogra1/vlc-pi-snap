@@ -27,7 +27,7 @@ architectures:
 apps:
   vlc-pi:
     desktop: usr/share/applications/vlc.desktop
-    command: bin/locales-launch $SNAP/bin/desktop-launch $SNAP/usr/bin/vlc
+    command: bin/checks $SNAP/bin/locales-launch $SNAP/bin/desktop-launch $SNAP/usr/bin/vlc
     environment:
       LD_LIBRARY_PATH: "$SNAP/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$SNAP/usr/lib/vlc:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/oss4-libsalsa:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/samba:$SNAP/usr/lib"
       KDE_FORK_SLAVES: "1"
@@ -644,6 +644,13 @@ parts:
     stage-packages:
       - libc-bin
       - locales
+  init-checks:
+    plugin: dump
+    source: scripts
+    stage-packages:
+      - yad
+    organize:
+      checks.sh: bin/checks
   cleanup:
     plugin: nil
     after: [ vlc ]
