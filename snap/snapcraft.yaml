@@ -640,10 +640,10 @@ parts:
   locales-launch:
     plugin: nil
     stage-snaps:
-    - locales-launch
+      - locales-launch
     stage-packages:
-    - libc-bin
-    - locales
+      - libc-bin
+      - locales
   cleanup:
     plugin: nil
     after: [ vlc ]
