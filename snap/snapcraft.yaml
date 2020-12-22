@@ -54,6 +54,34 @@ apps:
       - x11
     slots:
       - mpris
+  cvlc:
+    command: bin/checks $SNAP/bin/locales-launch $SNAP/bin/desktop-launch $SNAP/usr/bin/cvlc
+    environment:
+      LD_LIBRARY_PATH: "$SNAP/lib:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri:$SNAP/usr/lib/vlc:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/oss4-libsalsa:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/samba:$SNAP/usr/lib"
+      KDE_FORK_SLAVES: "1"
+      KF5_LIBEXEC_DIR: "$SNAP/usr/lib/$ARCH/libexec/kf5"
+      QML2_IMPORT_PATH: "$QML2_IMPORT_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/qt5/qml/"
+    plugs:
+      - audio-record
+      - audio-playback
+      - avahi-control
+      - camera
+      - desktop
+      - dvb
+      - hardware-observe
+      - home
+      - jack1
+      - mount-observe
+      - network
+      - network-bind
+      - opengl
+      - optical-drive
+      - removable-media
+      - screen-inhibit-control
+      - unity7
+      - x11
+    slots:
+      - mpris
 
 layout:
   /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:
