@@ -17,7 +17,7 @@ fi
 if [ ! -d "$SNAP_USER_COMMON/.local/lib/locale/$LANG" ]; then
   yad --text "\nGenerating VLC translations for:\n\n\t$LANG" \
     --borders=10 --no-buttons --center --on-top \
-    --undecorated --skip-taskbar --timeout=8 \
+    --undecorated --skip-taskbar --timeout=10 \
     --timeout-indicator=bottom &
 fi
 
